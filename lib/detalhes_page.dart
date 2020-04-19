@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'edicao/edicao_page.dart';
+
 class DetalhesPage extends StatefulWidget {
   final data;
 
@@ -15,6 +17,16 @@ class _DetalhesPageState extends State<DetalhesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detalhes'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => EdicaoPage(
+                            data: widget.data,
+                          ))))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -1,4 +1,6 @@
 import 'package:appativo/detalhes_page.dart';
+import 'package:appativo/edicao/edicao_page.dart';
+import 'package:appativo/teste_page.dart';
 import 'package:appativo/sheet.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +44,12 @@ class _HomePageState extends State<HomePage> {
 
             return Container();
           }),
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.add),onPressed: () {}),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => EdicaoPage()));
+          }),
     );
   }
 }
