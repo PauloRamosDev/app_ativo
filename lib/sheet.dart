@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
-class Sheet {
+class Sheet{
   final pathSheet;
 
   Sheet(this.pathSheet);

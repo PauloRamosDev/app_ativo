@@ -1,30 +1,34 @@
+import 'package:appativo/provider/provider_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
-import 'bloc_edicao.dart';
+import 'bloc_edit.dart';
 
-class EdicaoPage extends StatefulWidget {
+class EditPage extends StatefulWidget {
   final List data;
 
-  EdicaoPage({this.data});
+  EditPage({this.data});
 
   @override
-  _EdicaoPageState createState() => _EdicaoPageState();
+  _EditPageState createState() => _EditPageState();
 }
 
-class _EdicaoPageState extends State<EdicaoPage> {
-  BlocEdicao bloc;
+class _EditPageState extends State<EditPage> {
+  BlocEdit bloc;
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
   @override
   void initState() {
-    bloc = BlocEdicao(widget.data);
+    bloc = BlocEdit(widget.data);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var _dataBase = Provider.of<ProviderDatabase>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(bloc.tipo),
@@ -39,12 +43,30 @@ class _EdicaoPageState extends State<EdicaoPage> {
                 readOnly: false,
                 child: Column(
                   children: <Widget>[
+                    _editText(_dataBase.cabecalho[0],
+                        onChanged: (value) => print(value),
+                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[0]:'',sugetionList: _dataBase.sugestionList(0)),
+                    _editText(_dataBase.cabecalho[1],
+                        onChanged: (value) => print(value),
+                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[1]:'',sugetionList: _dataBase.sugestionList(1)),
+                    _editText(_dataBase.cabecalho[2],
+                        onChanged: (value) => print(value),
+                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[2]:''),
+                    _editText(_dataBase.cabecalho[3],
+                        onChanged: (value) => print(value),
+                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[3]:''),
+                    _editText(_dataBase.cabecalho[4],
+                        onChanged: (value) => print(value),
+                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[4]:''),
+                    _editText(_dataBase.cabecalho[5],
+                        onChanged: (value) => print(value),
+                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[5]:''),
                     FormBuilderTypeAhead(
                       attribute: 'Patrimonio',
                       onChanged: bloc.setPatrimonio,
                       noItemsFoundBuilder: (_) => null,
                       decoration: InputDecoration(
-                        labelText: "Patrimonio",
+                        labelText: 'Patrimonio',
                       ),
                       initialValue: bloc.patrimonio ?? '',
                       textFieldConfiguration: TextFieldConfiguration(
@@ -52,7 +74,6 @@ class _EdicaoPageState extends State<EdicaoPage> {
                       itemBuilder: (context, input) {
                         return ListTile(
                           title: Text(input),
-                          subtitle: Text('coco'),
                         );
                       },
                       selectionToTextTransformer: (value) => value,
@@ -156,6 +177,47 @@ class _EdicaoPageState extends State<EdicaoPage> {
           ),
         ),
       ),
+    );
+  }
+
+  _editText(label,
+      {ValueChanged onChanged,
+      initialValue,
+      List<String> sugetionList = const [],
+      textFieldConfiguration = const TextFieldConfiguration()}) {
+    return FormBuilderTypeAhead(
+      attribute: label,
+      onChanged: onChanged,
+      noItemsFoundBuilder: (_) => null,
+      decoration: InputDecoration(
+        labelText: label.toString(),
+      ),
+      initialValue: initialValue != null ? initialValue.toString() : '',
+      textFieldConfiguration: textFieldConfiguration,
+      itemBuilder: (context, input) {
+        return ListTile(
+          title: Text(input),
+        );
+      },
+      selectionToTextTransformer: (value) => value,
+      suggestionsCallback: (query) {
+        print('suggestionsCallback:  $query');
+
+        if (query.length != 0) {
+          var lowercaseQuery = query.toLowerCase();
+
+          //TODO: tenho que deixar aqui a lista global com o seu index
+          return sugetionList.where((value) {
+            return value.toLowerCase().contains(lowercaseQuery);
+          }).toList(growable: false)
+            ..sort((a, b) => a
+                .toLowerCase()
+                .indexOf(lowercaseQuery)
+                .compareTo(b.toLowerCase().indexOf(lowercaseQuery)));
+        } else {
+          return sugetionList;
+        }
+      },
     );
   }
 }

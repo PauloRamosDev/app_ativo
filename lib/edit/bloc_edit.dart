@@ -1,6 +1,6 @@
-class BlocEdicao {
+class BlocEdit {
 
-  BlocEdicao(List data) {
+  BlocEdit(List data) {
     if (data != null) {
       this.tipo = 'Editar Ativo';
       this.dataList = data.map<String>((e) => e.toString()).toList();
