@@ -167,7 +167,7 @@ class _EditPageState extends State<EditPage> {
               ),
               RaisedButton(
                 onPressed: () {
-                  bloc.commit();
+                  bloc.commit(context);
                 },
                 child: Text(bloc.tipo == 'Novo Ativo'
                     ? 'Adicionar'

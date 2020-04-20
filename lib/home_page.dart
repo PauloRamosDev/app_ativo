@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +31,6 @@ class _HomePageState extends State<HomePage> {
   Widget _bodyConsumer() {
     return Consumer<ProviderDatabase>(
       builder: (context, value, _) {
-
         if (!value.carregado) {
           print('carregando');
           return Center(
@@ -48,18 +46,20 @@ class _HomePageState extends State<HomePage> {
 
   ListView _body(BuildContext context, list) {
     return ListView.builder(
+        reverse: true,
         itemCount: list.length,
         itemBuilder: (_, index) {
           if (list.length > 0) {
-
-            if(index>0)
-            return ListTile(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => DetailsPage(list[index]))),
-              title: Text(list[index][1]),
-              subtitle: Text(list[index][5]),
-              leading: Text(list[index][0].toString()),
-            );
+            if (index > 0)
+              return ListTile(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => DetailsPage(list[index]))),
+                title: Text(list[index][1]),
+                subtitle: Text(list[index][5]),
+                leading: Text(list[index][0].toString()),
+              );
             return Container();
           } else {
             return Container();

@@ -4,18 +4,53 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
-class Sheet{
+class Sheet {
   final pathSheet;
 
   Sheet(this.pathSheet);
 
-  /// pathSheet de teste
-  /// data/user/0/com.appativo/app_flutter/test.xlsx
+  var _maxCollumn;
+  var _maxRows;
 
   _decoder() async {
     var bytesData = await rootBundle.load('assets/xlsx/model.xlsx');
     return SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
         update: true);
+  }
+
+  Future<SpreadsheetDecoder> _decoderDatabase() async {
+    var bytesData = await rootBundle.load('assets/xlsx/Melville.xlsx');
+    return SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
+        update: true);
+  }
+
+
+  insertRowDataBase(List<dynamic> data) async {
+    var decode = await _decoderDatabase();
+
+    var sheet = decode.tables[decode.tables.keys.first];
+
+    decode.insertRow(sheet.name, (sheet.maxRows));
+
+
+    for (var pos = 0; pos < data.length; pos++) {
+      decode.updateCell(sheet.name, pos, (sheet.maxRows-1), data[pos]??'');
+    }
+
+//    File(join(pathSheet))
+//      ..createSync(recursive: true)
+//      ..writeAsBytesSync(decode.encode());
+
+//    print('inserindo nova linha e criando arquivo output');
+
+    return decode;
+
+
+  }
+
+  createOutput(decode){
+    return File(join(pathSheet))..create(recursive: true)..writeAsBytes(decode.encode());
+
   }
 
   printSheet() async {
@@ -63,6 +98,7 @@ class Sheet{
     var bytesData = await rootBundle.load('assets/xlsx/Melville.xlsx');
     var decoder = SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
         update: true);
+
 
     return decoder.tables[decoder.tables.keys.first].rows;
   }

@@ -1,5 +1,7 @@
-class BlocEdit {
+import 'package:appativo/provider/provider_database.dart';
+import 'package:provider/provider.dart';
 
+class BlocEdit {
   BlocEdit(List data) {
     if (data != null) {
       this.tipo = 'Editar Ativo';
@@ -19,7 +21,9 @@ class BlocEdit {
   String tipo;
 
   setPatrimonio(value) => this.patrimonio = value;
+
   setDescricao(value) => this.descricao = value;
+
   setLocalizacao(value) => this.localizacao = value;
 
   bool _alterado() {
@@ -30,7 +34,7 @@ class BlocEdit {
     return a || b || c;
   }
 
-  _salvarAlteracao() {
+  _salvarAlteracao(context, data) {
     if (_alterado()) {
       //realizar alterações e salvar dados
 
@@ -43,18 +47,21 @@ class BlocEdit {
     //commitar alteracao;
   }
 
-  _novoAtivo() {
+  _novoAtivo(context, data) {
     //validar os campos e salvar os dados
+
+    Provider.of<ProviderDatabase>(context, listen: false).insert(data);
 
     print(toString());
     return true;
   }
 
-  commit() {
+  commit(context) {
     if (tipo == 'Novo Ativo') {
-      return _novoAtivo();
+      return _novoAtivo(context,
+          ['99999', 'descriçaõ do item', 'localidade', '1', '2', '3', null]);
     } else {
-      return _salvarAlteracao();
+      return _salvarAlteracao(context, dataList);
     }
   }
 
