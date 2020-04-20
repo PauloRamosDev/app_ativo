@@ -61,107 +61,107 @@ class _EditPageState extends State<EditPage> {
                     _editText(_dataBase.cabecalho[5],
                         onChanged: (value) => print(value),
                         initialValue: bloc.tipo =='Editar Ativo'? widget.data[5]:''),
-                    FormBuilderTypeAhead(
-                      attribute: 'Patrimonio',
-                      onChanged: bloc.setPatrimonio,
-                      noItemsFoundBuilder: (_) => null,
-                      decoration: InputDecoration(
-                        labelText: 'Patrimonio',
-                      ),
-                      initialValue: bloc.patrimonio ?? '',
-                      textFieldConfiguration: TextFieldConfiguration(
-                          keyboardType: TextInputType.number),
-                      itemBuilder: (context, input) {
-                        return ListTile(
-                          title: Text(input),
-                        );
-                      },
-                      selectionToTextTransformer: (value) => value,
-                      suggestionsCallback: (query) {
-                        print('suggestionsCallback:  $query');
-
-                        if (query.length != 0) {
-                          var lowercaseQuery = query.toLowerCase();
-
-                          //TODO: tenho que deixar aqui a lista global com o seu index
-                          return bloc.dataList.where((value) {
-                            return value.toLowerCase().contains(lowercaseQuery);
-                          }).toList(growable: false)
-                            ..sort((a, b) => a
-                                .toLowerCase()
-                                .indexOf(lowercaseQuery)
-                                .compareTo(
-                                    b.toLowerCase().indexOf(lowercaseQuery)));
-                        } else {
-                          return bloc.dataList;
-                        }
-                      },
-                    ),
-                    FormBuilderTypeAhead(
-                      attribute: 'descricao',
-                      onChanged: bloc.setDescricao,
-                      noItemsFoundBuilder: (_) => null,
-                      decoration: InputDecoration(
-                        labelText: "Descrição do item",
-                      ),
-                      initialValue: bloc.descricao ?? '',
-                      textFieldConfiguration: TextFieldConfiguration(
-//                          keyboardType: TextInputType.multiline,
-                          maxLines: 4,
-                          minLines: 1),
-                      itemBuilder: (context, input) {
-                        return ListTile(
-                          title: Text(input),
-                        );
-                      },
-                      selectionToTextTransformer: (value) => value,
-                      suggestionsCallback: (query) {
-                        if (query.length != 0) {
-                          var lowercaseQuery = query.toLowerCase();
-                          return bloc.dataList.where((value) {
-                            return value.toLowerCase().contains(lowercaseQuery);
-                          }).toList(growable: false)
-                            ..sort((a, b) => a
-                                .toLowerCase()
-                                .indexOf(lowercaseQuery)
-                                .compareTo(
-                                    b.toLowerCase().indexOf(lowercaseQuery)));
-                        } else {
-                          return bloc.dataList;
-                        }
-                      },
-                    ),
-                    FormBuilderTypeAhead(
-                      attribute: 'localizacao',
-                      onChanged: bloc.setLocalizacao,
-                      noItemsFoundBuilder: (_) => null,
-                      decoration: InputDecoration(
-                        labelText: "Localização",
-                      ),
-                      initialValue: bloc.localizacao ?? '',
-                      textFieldConfiguration: TextFieldConfiguration(),
-                      itemBuilder: (context, input) {
-                        return ListTile(
-                          title: Text(input),
-                        );
-                      },
-                      selectionToTextTransformer: (value) => value,
-                      suggestionsCallback: (query) {
-                        if (query.length != 0) {
-                          var lowercaseQuery = query.toLowerCase();
-                          return bloc.dataList.where((value) {
-                            return value.toLowerCase().contains(lowercaseQuery);
-                          }).toList(growable: false)
-                            ..sort((a, b) => a
-                                .toLowerCase()
-                                .indexOf(lowercaseQuery)
-                                .compareTo(
-                                    b.toLowerCase().indexOf(lowercaseQuery)));
-                        } else {
-                          return bloc.dataList;
-                        }
-                      },
-                    ),
+//                    FormBuilderTypeAhead(
+//                      attribute: 'Patrimonio',
+//                      onChanged: bloc.setPatrimonio,
+//                      noItemsFoundBuilder: (_) => null,
+//                      decoration: InputDecoration(
+//                        labelText: 'Patrimonio',
+//                      ),
+//                      initialValue: bloc.patrimonio ?? '',
+//                      textFieldConfiguration: TextFieldConfiguration(
+//                          keyboardType: TextInputType.number),
+//                      itemBuilder: (context, input) {
+//                        return ListTile(
+//                          title: Text(input),
+//                        );
+//                      },
+//                      selectionToTextTransformer: (value) => value,
+//                      suggestionsCallback: (query) {
+//                        print('suggestionsCallback:  $query');
+//
+//                        if (query.length != 0) {
+//                          var lowercaseQuery = query.toLowerCase();
+//
+//                          //TODO: tenho que deixar aqui a lista global com o seu index
+//                          return bloc.dataList.where((value) {
+//                            return value.toLowerCase().contains(lowercaseQuery);
+//                          }).toList(growable: false)
+//                            ..sort((a, b) => a
+//                                .toLowerCase()
+//                                .indexOf(lowercaseQuery)
+//                                .compareTo(
+//                                    b.toLowerCase().indexOf(lowercaseQuery)));
+//                        } else {
+//                          return bloc.dataList;
+//                        }
+//                      },
+//                    ),
+//                    FormBuilderTypeAhead(
+//                      attribute: 'descricao',
+//                      onChanged: bloc.setDescricao,
+//                      noItemsFoundBuilder: (_) => null,
+//                      decoration: InputDecoration(
+//                        labelText: "Descrição do item",
+//                      ),
+//                      initialValue: bloc.descricao ?? '',
+//                      textFieldConfiguration: TextFieldConfiguration(
+////                          keyboardType: TextInputType.multiline,
+//                          maxLines: 4,
+//                          minLines: 1),
+//                      itemBuilder: (context, input) {
+//                        return ListTile(
+//                          title: Text(input),
+//                        );
+//                      },
+//                      selectionToTextTransformer: (value) => value,
+//                      suggestionsCallback: (query) {
+//                        if (query.length != 0) {
+//                          var lowercaseQuery = query.toLowerCase();
+//                          return bloc.dataList.where((value) {
+//                            return value.toLowerCase().contains(lowercaseQuery);
+//                          }).toList(growable: false)
+//                            ..sort((a, b) => a
+//                                .toLowerCase()
+//                                .indexOf(lowercaseQuery)
+//                                .compareTo(
+//                                    b.toLowerCase().indexOf(lowercaseQuery)));
+//                        } else {
+//                          return bloc.dataList;
+//                        }
+//                      },
+//                    ),
+//                    FormBuilderTypeAhead(
+//                      attribute: 'localizacao',
+//                      onChanged: bloc.setLocalizacao,
+//                      noItemsFoundBuilder: (_) => null,
+//                      decoration: InputDecoration(
+//                        labelText: "Localização",
+//                      ),
+//                      initialValue: bloc.localizacao ?? '',
+//                      textFieldConfiguration: TextFieldConfiguration(),
+//                      itemBuilder: (context, input) {
+//                        return ListTile(
+//                          title: Text(input),
+//                        );
+//                      },
+//                      selectionToTextTransformer: (value) => value,
+//                      suggestionsCallback: (query) {
+//                        if (query.length != 0) {
+//                          var lowercaseQuery = query.toLowerCase();
+//                          return bloc.dataList.where((value) {
+//                            return value.toLowerCase().contains(lowercaseQuery);
+//                          }).toList(growable: false)
+//                            ..sort((a, b) => a
+//                                .toLowerCase()
+//                                .indexOf(lowercaseQuery)
+//                                .compareTo(
+//                                    b.toLowerCase().indexOf(lowercaseQuery)));
+//                        } else {
+//                          return bloc.dataList;
+//                        }
+//                      },
+//                    ),
                   ],
                 ),
               ),

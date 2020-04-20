@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => ProviderDatabase(),)
+        ChangeNotifierProvider(create: (context) => ProviderDatabase(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

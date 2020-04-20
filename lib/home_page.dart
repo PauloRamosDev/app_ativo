@@ -11,13 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ProviderDatabase database;
-
-  @override
-  void initState() {
-    database = Provider.of<ProviderDatabase>(context, listen: false);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +32,14 @@ class _HomePageState extends State<HomePage> {
   Widget _bodyConsumer() {
     return Consumer<ProviderDatabase>(
       builder: (context, value, _) {
-        if (value.loading) {
+
+        if (!value.carregado) {
+          print('carregando');
           return Center(
             child: CircularProgressIndicator(),
           );
         } else {
+          print('carregado');
           return _body(context, value.database);
         }
       },
@@ -51,12 +47,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   ListView _body(BuildContext context, list) {
-    if (list.length > 0) list.removeAt(0);
-
     return ListView.builder(
         itemCount: list.length,
         itemBuilder: (_, index) {
           if (list.length > 0) {
+
+            if(index>0)
             return ListTile(
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => DetailsPage(list[index]))),
@@ -64,6 +60,7 @@ class _HomePageState extends State<HomePage> {
               subtitle: Text(list[index][5]),
               leading: Text(list[index][0].toString()),
             );
+            return Container();
           } else {
             return Container();
           }

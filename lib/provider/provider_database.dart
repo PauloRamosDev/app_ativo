@@ -1,23 +1,23 @@
 import 'package:appativo/sheet.dart';
+import 'package:flutter/cupertino.dart';
 
-class ProviderDatabase {
-  List<dynamic> database;
-  bool loading;
-  var cabecalho;
+class ProviderDatabase with ChangeNotifier{
+  List<dynamic> database = [];
+  bool carregado = false;
 
   ProviderDatabase() {
-    _getData();
+    getDataBase();
   }
 
-  _getData() {
-    loading = true;
+  getDataBase() async {
+    database = await Sheet(null).getDataBase();
+    carregado = true;
+    print(carregado);
 
-    Sheet(null).getDataBase().then((value) {
-      if (value.length > 0) cabecalho = value[0];
-      database = value;
-      loading = false;
-    });
+    notifyListeners();
   }
+
+  get cabecalho => database[0];
 
   insert(List row) {}
 
