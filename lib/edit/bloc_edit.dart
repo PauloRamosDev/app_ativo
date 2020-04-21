@@ -1,44 +1,75 @@
+import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
 import 'package:provider/provider.dart';
 
 class BlocEdit {
-  BlocEdit(List data) {
+  final Data data;
+  String tipo;
+  String patrimonio='';
+  String descricao='';
+  String localizacao='';
+  String marca='';
+  String modelo='';
+  String medidas='';
+  String numeroFoto='';
+  String verificado='';
+
+  BlocEdit(this.data) {
     if (data != null) {
       this.tipo = 'Editar Ativo';
-      this.dataList = data.map<String>((e) => e.toString()).toList();
-      this.patrimonio = dataList[0];
-      this.descricao = dataList[1];
-      this.localizacao = dataList[5];
+
+      patrimonio = data.fieldOne;
+      descricao = data.fieldTwo;
+      marca = data.fieldTree;
+      modelo = data.fieldFour;
+      medidas = data.fieldFive;
+      localizacao = data.fieldSix;
+      numeroFoto = data.fieldSeven;
+      verificado = data.fieldEigth;
     } else {
-      tipo = 'Novo Ativo';
+      this.tipo = 'Novo Ativo';
     }
+
+    print(tipo);
   }
-
-  List<String> dataList = [];
-  String patrimonio;
-  String descricao;
-  String localizacao;
-  String tipo;
-
-  setPatrimonio(value) => this.patrimonio = value;
-
-  setDescricao(value) => this.descricao = value;
-
-  setLocalizacao(value) => this.localizacao = value;
 
   bool _alterado() {
-    var a = patrimonio != dataList[0];
-    var b = descricao != dataList[1];
-    var c = localizacao != dataList[5];
+    var a = data.fieldOne != patrimonio;
+    var b = data.fieldTwo != descricao;
+    var c = data.fieldTree != marca;
+    var d = data.fieldFour != modelo;
+    var e = data.fieldFive != medidas;
+    var f = data.fieldSix != localizacao;
+    var g = data.fieldSeven != numeroFoto;
+    var h = data.fieldEigth != verificado;
 
-    return a || b || c;
+    return a || b || c || d || e || f || g || h;
   }
 
-  _salvarAlteracao(context, data) {
+  _updateAtivo(context) async{
     if (_alterado()) {
       //realizar alterações e salvar dados
 
+
+      var provider = Provider.of<ProviderDatabase>(context,listen: false);
+
+      if (patrimonio.isNotEmpty &&
+          descricao.isNotEmpty &&
+          localizacao.isNotEmpty) {
+        return await provider.update(Data(
+          fieldOne: data.fieldOne,
+          fieldTwo: descricao,
+          fieldSix: localizacao,
+          fieldTree: marca,
+          fieldFour: modelo,
+          fieldFive: medidas,
+        ));
+      }
+      return null;
+
+
       print(toString());
+      return true;
     } else {
       print('sem alterações');
       return true;
@@ -47,27 +78,35 @@ class BlocEdit {
     //commitar alteracao;
   }
 
-  _novoAtivo(context, data) {
+  _insertAtivo(context) async {
     //validar os campos e salvar os dados
+    var provider = Provider.of<ProviderDatabase>(context,listen: false);
 
-    Provider.of<ProviderDatabase>(context, listen: false).insert(data);
-
-    print(toString());
-    return true;
+    if (patrimonio.isNotEmpty &&
+        descricao.isNotEmpty &&
+        localizacao.isNotEmpty) {
+      return await provider.insert(Data(
+        fieldOne: patrimonio,
+        fieldTwo: descricao,
+        fieldSix: localizacao,
+        fieldTree: marca,
+        fieldFour: modelo,
+        fieldFive: medidas,
+      ));
+    }
+    return null;
   }
 
   commit(context) {
     if (tipo == 'Novo Ativo') {
-      return _novoAtivo(context,
-          ['99999', 'descriçaõ do item', 'localidade', '1', '2', '3', null]);
+      return _insertAtivo(context);
     } else {
-      return _salvarAlteracao(context, dataList);
+      return _updateAtivo(context);
     }
   }
 
   @override
   String toString() {
-    //alterado();
     return 'BlocEdicao => tipo: $tipo, patrimonio: $patrimonio, descricao: $descricao, localização: $localizacao';
   }
 }

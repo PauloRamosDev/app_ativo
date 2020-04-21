@@ -1,3 +1,4 @@
+import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'bloc_edit.dart';
 
 class EditPage extends StatefulWidget {
-  final List data;
+  final Data data;
 
   EditPage({this.data});
 
@@ -43,131 +44,57 @@ class _EditPageState extends State<EditPage> {
                 readOnly: false,
                 child: Column(
                   children: <Widget>[
-                    _editText(_dataBase.cabecalho[0],
-                        onChanged: (value) => print(value),
-                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[0]:'',sugetionList: _dataBase.sugestionList(0)),
-                    _editText(_dataBase.cabecalho[1],
-                        onChanged: (value) => print(value),
-                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[1]:'',sugetionList: _dataBase.sugestionList(1)),
-                    _editText(_dataBase.cabecalho[2],
-                        onChanged: (value) => print(value),
-                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[2]:''),
-                    _editText(_dataBase.cabecalho[3],
-                        onChanged: (value) => print(value),
-                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[3]:''),
-                    _editText(_dataBase.cabecalho[4],
-                        onChanged: (value) => print(value),
-                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[4]:''),
-                    _editText(_dataBase.cabecalho[5],
-                        onChanged: (value) => print(value),
-                        initialValue: bloc.tipo =='Editar Ativo'? widget.data[5]:''),
-//                    FormBuilderTypeAhead(
-//                      attribute: 'Patrimonio',
-//                      onChanged: bloc.setPatrimonio,
-//                      noItemsFoundBuilder: (_) => null,
-//                      decoration: InputDecoration(
-//                        labelText: 'Patrimonio',
-//                      ),
-//                      initialValue: bloc.patrimonio ?? '',
-//                      textFieldConfiguration: TextFieldConfiguration(
-//                          keyboardType: TextInputType.number),
-//                      itemBuilder: (context, input) {
-//                        return ListTile(
-//                          title: Text(input),
-//                        );
-//                      },
-//                      selectionToTextTransformer: (value) => value,
-//                      suggestionsCallback: (query) {
-//                        print('suggestionsCallback:  $query');
-//
-//                        if (query.length != 0) {
-//                          var lowercaseQuery = query.toLowerCase();
-//
-//                          //TODO: tenho que deixar aqui a lista global com o seu index
-//                          return bloc.dataList.where((value) {
-//                            return value.toLowerCase().contains(lowercaseQuery);
-//                          }).toList(growable: false)
-//                            ..sort((a, b) => a
-//                                .toLowerCase()
-//                                .indexOf(lowercaseQuery)
-//                                .compareTo(
-//                                    b.toLowerCase().indexOf(lowercaseQuery)));
-//                        } else {
-//                          return bloc.dataList;
-//                        }
-//                      },
-//                    ),
-//                    FormBuilderTypeAhead(
-//                      attribute: 'descricao',
-//                      onChanged: bloc.setDescricao,
-//                      noItemsFoundBuilder: (_) => null,
-//                      decoration: InputDecoration(
-//                        labelText: "Descrição do item",
-//                      ),
-//                      initialValue: bloc.descricao ?? '',
-//                      textFieldConfiguration: TextFieldConfiguration(
-////                          keyboardType: TextInputType.multiline,
-//                          maxLines: 4,
-//                          minLines: 1),
-//                      itemBuilder: (context, input) {
-//                        return ListTile(
-//                          title: Text(input),
-//                        );
-//                      },
-//                      selectionToTextTransformer: (value) => value,
-//                      suggestionsCallback: (query) {
-//                        if (query.length != 0) {
-//                          var lowercaseQuery = query.toLowerCase();
-//                          return bloc.dataList.where((value) {
-//                            return value.toLowerCase().contains(lowercaseQuery);
-//                          }).toList(growable: false)
-//                            ..sort((a, b) => a
-//                                .toLowerCase()
-//                                .indexOf(lowercaseQuery)
-//                                .compareTo(
-//                                    b.toLowerCase().indexOf(lowercaseQuery)));
-//                        } else {
-//                          return bloc.dataList;
-//                        }
-//                      },
-//                    ),
-//                    FormBuilderTypeAhead(
-//                      attribute: 'localizacao',
-//                      onChanged: bloc.setLocalizacao,
-//                      noItemsFoundBuilder: (_) => null,
-//                      decoration: InputDecoration(
-//                        labelText: "Localização",
-//                      ),
-//                      initialValue: bloc.localizacao ?? '',
-//                      textFieldConfiguration: TextFieldConfiguration(),
-//                      itemBuilder: (context, input) {
-//                        return ListTile(
-//                          title: Text(input),
-//                        );
-//                      },
-//                      selectionToTextTransformer: (value) => value,
-//                      suggestionsCallback: (query) {
-//                        if (query.length != 0) {
-//                          var lowercaseQuery = query.toLowerCase();
-//                          return bloc.dataList.where((value) {
-//                            return value.toLowerCase().contains(lowercaseQuery);
-//                          }).toList(growable: false)
-//                            ..sort((a, b) => a
-//                                .toLowerCase()
-//                                .indexOf(lowercaseQuery)
-//                                .compareTo(
-//                                    b.toLowerCase().indexOf(lowercaseQuery)));
-//                        } else {
-//                          return bloc.dataList;
-//                        }
-//                      },
-//                    ),
+                    _editText(_dataBase.cabecalho.fieldOne, onChanged: (value) {
+                      bloc.patrimonio = value;
+                    },
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? widget.data.fieldOne
+                            : '',
+                        sugetionList: _dataBase.sugestionList(1)),
+                    _editText(_dataBase.cabecalho.fieldTwo, onChanged: (value) {
+                      bloc.descricao = value;
+                    },
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? widget.data.fieldTwo
+                            : '',
+                        sugetionList: _dataBase.sugestionList(2)),
+                    _editText(_dataBase.cabecalho.fieldTree,
+                        onChanged: (value) {
+                      bloc.marca = value;
+                    },
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? widget.data.fieldTree
+                            : '',
+                        sugetionList: _dataBase.sugestionList(3)),
+                    _editText(_dataBase.cabecalho.fieldFour,
+                        onChanged: (value) {
+                      bloc.modelo = value;
+                    },
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? widget.data.fieldFour
+                            : ''),
+                    _editText(_dataBase.cabecalho.fieldFive,
+                        onChanged: (value) {
+                      bloc.medidas = value;
+                    },
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? widget.data.fieldFive
+                            : ''),
+                    _editText(_dataBase.cabecalho.fieldSix, onChanged: (value) {
+                      bloc.localizacao = value;
+                    },
+                        sugetionList: _dataBase.sugestionList(6),
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? widget.data.fieldSix
+                            : ''),
                   ],
                 ),
               ),
               RaisedButton(
-                onPressed: () {
-                  bloc.commit(context);
+                onPressed: () async{
+                  var commit = await bloc.commit(context);
+
+                  print(commit);
                 },
                 child: Text(bloc.tipo == 'Novo Ativo'
                     ? 'Adicionar'
@@ -180,7 +107,7 @@ class _EditPageState extends State<EditPage> {
     );
   }
 
-  _editText(label,
+  Widget _editText(label,
       {ValueChanged onChanged,
       initialValue,
       List<String> sugetionList = const [],

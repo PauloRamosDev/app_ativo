@@ -1,4 +1,5 @@
 import 'package:appativo/details_page.dart';
+import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,23 +45,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ListView _body(BuildContext context, list) {
+  ListView _body(BuildContext context, List<Data> list) {
     return ListView.builder(
-        reverse: true,
         itemCount: list.length,
         itemBuilder: (_, index) {
           if (list.length > 0) {
-            if (index > 0)
-              return ListTile(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => DetailsPage(list[index]))),
-                title: Text(list[index][1]),
-                subtitle: Text(list[index][5]),
-                leading: Text(list[index][0].toString()),
-              );
-            return Container();
+            var data = list[index];
+            return ListTile(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => DetailsPage(data))),
+              title: Text(data.fieldTwo),
+              subtitle: Text(data.fieldSix),
+              leading: Text(data.fieldOne),
+            );
           } else {
             return Container();
           }
