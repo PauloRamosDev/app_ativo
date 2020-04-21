@@ -94,6 +94,8 @@ class _EditPageState extends State<EditPage> {
                 onPressed: () async{
                   var commit = await bloc.commit(context);
 
+
+
                   print(commit);
                 },
                 child: Text(bloc.tipo == 'Novo Ativo'

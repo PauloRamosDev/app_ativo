@@ -36,7 +36,7 @@ class DetailsPage extends StatelessWidget {
               child: Container(
                 height: 250,
                 child: Image.asset(
-                  'assets/melville/${data.fieldSeven}.jpg',
+                  'assets/melville/${data.fieldSeven??'INACESSÍVEL'}.jpg',
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),

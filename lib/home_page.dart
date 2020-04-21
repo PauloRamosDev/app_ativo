@@ -46,11 +46,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   ListView _body(BuildContext context, List<Data> list) {
+    var listReversed = list.reversed.toList();
     return ListView.builder(
         itemCount: list.length,
         itemBuilder: (_, index) {
           if (list.length > 0) {
-            var data = list[index];
+            var data = listReversed[index];
             return ListTile(
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => DetailsPage(data))),
