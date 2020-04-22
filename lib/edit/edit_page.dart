@@ -17,6 +17,7 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
+  var provider;
   BlocEdit bloc;
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
@@ -27,9 +28,13 @@ class _EditPageState extends State<EditPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    var _dataBase = Provider.of<ProviderDatabase>(context);
+  void didChangeDependencies() {
+    provider = Provider.of<ProviderDatabase>(context);
+    super.didChangeDependencies();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(bloc.tipo),
@@ -44,46 +49,44 @@ class _EditPageState extends State<EditPage> {
                 readOnly: false,
                 child: Column(
                   children: <Widget>[
-                    _editText(_dataBase.cabecalho.fieldOne, onChanged: (value) {
-                      bloc.patrimonio = value;
-                    },
-                        initialValue: bloc.tipo == 'Editar Ativo'
-                            ? widget.data.fieldOne
-                            : '',
-                        sugetionList: _dataBase.sugestionList(1)),
-                    _editText(_dataBase.cabecalho.fieldTwo, onChanged: (value) {
-                      bloc.descricao = value;
-                    },
-                        initialValue: bloc.tipo == 'Editar Ativo'
-                            ? widget.data.fieldTwo
-                            : '',
-                        sugetionList: _dataBase.sugestionList(2)),
-                    _editText(_dataBase.cabecalho.fieldTree,
-                        onChanged: (value) {
-                      bloc.marca = value;
-                    },
-                        initialValue: bloc.tipo == 'Editar Ativo'
-                            ? widget.data.fieldTree
-                            : '',
-                        sugetionList: _dataBase.sugestionList(3)),
-                    _editText(_dataBase.cabecalho.fieldFour,
-                        onChanged: (value) {
-                      bloc.modelo = value;
-                    },
+                    editText(
+                      provider.cabecalho.fieldOne,
+                      readOnly: bloc.tipo == 'Editar Ativo',
+                      onChanged: (value) => bloc.patrimonio = value,
+                      sugetionList: provider.sugestionList(1),
+                      initialValue: bloc.tipo == 'Editar Ativo'
+                          ? widget.data.fieldOne
+                          : '',
+                    ),
+                    editText(
+                      provider.cabecalho.fieldTwo,
+                      onChanged: (value) => bloc.descricao = value,
+                      sugetionList: provider.sugestionList(2),
+                      initialValue: bloc.tipo == 'Editar Ativo'
+                          ? widget.data.fieldTwo
+                          : '',
+                    ),
+                    editText(
+                      provider.cabecalho.fieldTree,
+                      sugetionList: provider.sugestionList(3),
+                      onChanged: (value) => bloc.marca = value,
+                      initialValue: bloc.tipo == 'Editar Ativo'
+                          ? widget.data.fieldTree
+                          : '',
+                    ),
+                    editText(provider.cabecalho.fieldFour,
+                        onChanged: (value) => bloc.modelo = value,
                         initialValue: bloc.tipo == 'Editar Ativo'
                             ? widget.data.fieldFour
                             : ''),
-                    _editText(_dataBase.cabecalho.fieldFive,
-                        onChanged: (value) {
-                      bloc.medidas = value;
-                    },
+                    editText(provider.cabecalho.fieldFive,
+                        onChanged: (value) => bloc.medidas = value,
                         initialValue: bloc.tipo == 'Editar Ativo'
                             ? widget.data.fieldFive
                             : ''),
-                    _editText(_dataBase.cabecalho.fieldSix, onChanged: (value) {
-                      bloc.localizacao = value;
-                    },
-                        sugetionList: _dataBase.sugestionList(6),
+                    editText(provider.cabecalho.fieldSix,
+                        onChanged: (value) => bloc.localizacao = value,
+                        sugetionList: provider.sugestionList(6),
                         initialValue: bloc.tipo == 'Editar Ativo'
                             ? widget.data.fieldSix
                             : ''),
@@ -91,12 +94,14 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
               RaisedButton(
-                onPressed: () async{
+                onPressed: () async {
                   var commit = await bloc.commit(context);
 
-
-
                   print(commit);
+
+
+
+                  commit != null ? Navigator.of(context).pop(bloc.registro) : print(commit);
                 },
                 child: Text(bloc.tipo == 'Novo Ativo'
                     ? 'Adicionar'
@@ -109,12 +114,16 @@ class _EditPageState extends State<EditPage> {
     );
   }
 
-  Widget _editText(label,
+  Widget editText(label,
       {ValueChanged onChanged,
       initialValue,
+      readOnly = false,
       List<String> sugetionList = const [],
-      textFieldConfiguration = const TextFieldConfiguration()}) {
+      textFieldConfiguration = const TextFieldConfiguration(
+        textCapitalization: TextCapitalization.characters,
+      )}) {
     return FormBuilderTypeAhead(
+      readOnly: readOnly,
       attribute: label,
       onChanged: onChanged,
       noItemsFoundBuilder: (_) => null,

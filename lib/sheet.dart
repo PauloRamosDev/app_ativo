@@ -9,8 +9,8 @@ class Sheet {
 
   Sheet(this.pathSheet);
 
-  var _maxCollumn;
-  var _maxRows;
+//  var _maxCollumn;
+//  var _maxRows;
 
   _decoder() async {
     var bytesData = await rootBundle.load('assets/xlsx/model.xlsx');

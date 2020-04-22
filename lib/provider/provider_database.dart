@@ -20,7 +20,7 @@ class ProviderDatabase with ChangeNotifier {
   }
 
   update(Data data) async {
-    var update = await dao.update(data, data.fieldOne);
+    var update = await dao.update(data, data.id);
 
     if (update != null) {
       database = await dao.findAll();
@@ -32,6 +32,8 @@ class ProviderDatabase with ChangeNotifier {
   }
 
   getDataBase() async {
+
+    print('getDataBase');
     if ((await dao.count()) > 0) {
       print('banco de dados já populado');
       database.addAll((await dao.findAll()));
@@ -59,9 +61,6 @@ class ProviderDatabase with ChangeNotifier {
       cabecalho = await dao.headers();
     }
     carregado = true;
-
-    print(carregado);
-
     notifyListeners();
   }
 

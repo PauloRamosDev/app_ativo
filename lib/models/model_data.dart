@@ -1,5 +1,5 @@
 class Data {
-
+  int id;
   String fieldOne;
   String fieldTwo;
   String fieldTree;
@@ -9,18 +9,20 @@ class Data {
   String fieldSeven;
   String fieldEigth;
 
-  Data(
-      {this.fieldOne,
-      this.fieldTwo,
-      this.fieldTree,
-      this.fieldFour,
-      this.fieldFive,
-      this.fieldSix,
-      this.fieldSeven,
-      this.fieldEigth,
-      });
+  Data({
+    this.id,
+    this.fieldOne,
+    this.fieldTwo,
+    this.fieldTree,
+    this.fieldFour,
+    this.fieldFive,
+    this.fieldSix,
+    this.fieldSeven,
+    this.fieldEigth,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     fieldOne = json['fieldOne'];
     fieldTwo = json['fieldTwo'];
     fieldTree = json['fieldTree'];
@@ -33,6 +35,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'fieldOne': fieldOne,
       'fieldTwo': fieldTwo,
       'fieldTree': fieldTree,

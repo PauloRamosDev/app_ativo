@@ -4,18 +4,20 @@ import 'package:provider/provider.dart';
 
 class BlocEdit {
   final Data data;
+  Data registro;
   String tipo;
-  String patrimonio='';
-  String descricao='';
-  String localizacao='';
-  String marca='';
-  String modelo='';
-  String medidas='';
-  String numeroFoto='';
-  String verificado='';
+  String patrimonio = '';
+  String descricao = '';
+  String localizacao = '';
+  String marca = '';
+  String modelo = '';
+  String medidas = '';
+  String numeroFoto;
+  String verificado = '';
 
   BlocEdit(this.data) {
     if (data != null) {
+      print(data.toJson());
       this.tipo = 'Editar Ativo';
 
       patrimonio = data.fieldOne;
@@ -46,30 +48,27 @@ class BlocEdit {
     return a || b || c || d || e || f || g || h;
   }
 
-  _updateAtivo(context) async{
+  _updateAtivo(context) async {
     if (_alterado()) {
       //realizar alterações e salvar dados
 
-
-      var provider = Provider.of<ProviderDatabase>(context,listen: false);
+      var provider = Provider.of<ProviderDatabase>(context, listen: false);
 
       if (patrimonio.isNotEmpty &&
           descricao.isNotEmpty &&
           localizacao.isNotEmpty) {
-        return await provider.update(Data(
-          fieldOne: data.fieldOne,
-          fieldTwo: descricao,
-          fieldSix: localizacao,
-          fieldTree: marca,
-          fieldFour: modelo,
-          fieldFive: medidas,
-        ));
+        registro = Data(
+            id: data.id,
+            fieldOne: patrimonio,
+            fieldTwo: descricao,
+            fieldSix: localizacao,
+            fieldTree: marca,
+            fieldFour: modelo,
+            fieldFive: medidas,
+            fieldSeven: numeroFoto ?? data.fieldSeven);
+        return await provider.update(registro);
       }
       return null;
-
-
-      print(toString());
-      return true;
     } else {
       print('sem alterações');
       return true;
@@ -80,19 +79,22 @@ class BlocEdit {
 
   _insertAtivo(context) async {
     //validar os campos e salvar os dados
-    var provider = Provider.of<ProviderDatabase>(context,listen: false);
+    var provider = Provider.of<ProviderDatabase>(context, listen: false);
 
     if (patrimonio.isNotEmpty &&
         descricao.isNotEmpty &&
         localizacao.isNotEmpty) {
-      return await provider.insert(Data(
+      registro = Data(
         fieldOne: patrimonio,
         fieldTwo: descricao,
         fieldSix: localizacao,
         fieldTree: marca,
         fieldFour: modelo,
         fieldFive: medidas,
-      ));
+        fieldSeven: numeroFoto ?? 'INACESSÍVEL',
+      );
+
+      return await provider.insert(registro);
     }
     return null;
   }

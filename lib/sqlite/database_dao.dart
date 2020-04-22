@@ -19,10 +19,10 @@ class DatabaseDAO {
     return id;
   }
 
-  Future<int> update(Data registro, String idSqlite) async {
+  Future<int> update(Data registro, int idSqlite) async {
     var dbClient = await db;
     var id = await dbClient.update(SqlHelper.tableDatabase, registro.toJson(),
-        where: 'fieldOne = $idSqlite', conflictAlgorithm: ConflictAlgorithm.replace);
+        where: 'id = $idSqlite', conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
 

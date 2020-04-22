@@ -5,11 +5,17 @@ import 'package:provider/provider.dart';
 import 'edit/edit_page.dart';
 import 'models/model_data.dart';
 
-class DetailsPage extends StatelessWidget {
-  final Data data;
+// ignore: must_be_immutable
+class DetailsPage extends StatefulWidget {
+  Data data;
 
   DetailsPage(this.data);
 
+  @override
+  _DetailsPageState createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     var _cabecalho = Provider.of<ProviderDatabase>(context).cabecalho;
@@ -20,12 +26,23 @@ class DetailsPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => EditPage(
-                            data: data,
-                          ))))
+              onPressed: () async {
+                var registro = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => EditPage(
+                              data: widget.data,
+                            )));
+
+                if(registro!=null){
+                  setState(() {
+                    widget.data = registro;
+                  });
+                }
+
+              },
+
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -35,27 +52,23 @@ class DetailsPage extends StatelessWidget {
             Center(
               child: Container(
                 height: 250,
-                child: Image.asset(
-                  'assets/melville/${data.fieldSeven??'INACESSÍVEL'}.jpg',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
+                child: _image(widget.data.fieldSeven),
               ),
             ),
             labelDescription(_cabecalho.fieldOne),
-            label(data.fieldOne),
+            label(widget.data.fieldOne),
             labelDescription(_cabecalho.fieldTwo),
-            label(data.fieldTwo),
+            label(widget.data.fieldTwo),
             labelDescription(_cabecalho.fieldTree),
-            label(data.fieldTree),
+            label(widget.data.fieldTree),
             labelDescription(_cabecalho.fieldFour),
-            label(data.fieldFour),
+            label(widget.data.fieldFour),
             labelDescription(_cabecalho.fieldFive),
-            label(data.fieldFive),
+            label(widget.data.fieldFive),
             labelDescription(_cabecalho.fieldSix),
-            label(data.fieldSix),
+            label(widget.data.fieldSix),
             labelDescription(_cabecalho.fieldSeven),
-            label(data.fieldSeven),
+            label(widget.data.fieldSeven),
           ],
         ),
       ),
@@ -84,5 +97,23 @@ class DetailsPage extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
     );
+  }
+
+  _image(String fieldSeven) {
+    if (fieldSeven != null &&
+        fieldSeven != 'INACESSÍVEL' &&
+        fieldSeven.isNotEmpty) {
+      return Image.asset(
+        'assets/melville/$fieldSeven.jpg',
+        fit: BoxFit.cover,
+        width: double.infinity,
+      );
+    } else {
+      return Image.asset(
+        'assets/melville/nopick.jpg',
+        fit: BoxFit.cover,
+        width: double.infinity,
+      );
+    }
   }
 }
