@@ -14,15 +14,22 @@ class ProviderDatabase with ChangeNotifier {
   }
 
   insert(Data data) async {
-    database.add(data);
-    notifyListeners();
-    return await dao.insert(data);
+
+    var insert = await dao.insert(data);
+
+    if (insert > 0) {
+      database = await dao.findAll();
+      notifyListeners();
+
+      return insert;
+    }
+    return null;
   }
 
   update(Data data) async {
     var update = await dao.update(data, data.id);
 
-    if (update != null) {
+    if (update > 0) {
       database = await dao.findAll();
       notifyListeners();
 
