@@ -10,7 +10,7 @@ class ProviderDatabase with ChangeNotifier {
   Data cabecalho;
 
   ProviderDatabase() {
-    getDataBase();
+    _getDataBase();
   }
 
   insert(Data data) async {
@@ -37,7 +37,7 @@ class ProviderDatabase with ChangeNotifier {
     return null;
   }
 
-  getDataBase() async {
+  _getDataBase() async {
     print('getDataBase');
     if ((await dao.count()) > 0) {
       print('banco de dados já populado');
@@ -45,7 +45,7 @@ class ProviderDatabase with ChangeNotifier {
       cabecalho = await dao.headers();
     } else {
       print('populando bd pela primeira vez');
-      var base = await Sheet(null).getDataBase();
+      var base = await Sheet().getDataBase();
 
       for (var i = 0; i < base.length; ++i) {
         var registro = base[i];

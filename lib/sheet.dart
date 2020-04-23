@@ -2,93 +2,60 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
-class Sheet {
-  final pathSheet;
+import 'models/model_data.dart';
 
-  Sheet(this.pathSheet);
+class Sheet {
+  SpreadsheetTable _sheet;
+  SpreadsheetDecoder _decoder;
+
+  Sheet();
 
 //  var _maxCollumn;
 //  var _maxRows;
 
-  _decoder() async {
+  initialization() async {
+    _decoder = await _decoderModel();
+    _sheet = _decoder.tables[_decoder.tables.keys.first];
+  }
+
+  Future<SpreadsheetDecoder> _decoderModel() async {
     var bytesData = await rootBundle.load('assets/xlsx/model.xlsx');
     return SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
         update: true);
   }
 
-  Future<SpreadsheetDecoder> _decoderDatabase() async {
-    var bytesData = await rootBundle.load('assets/xlsx/Melville.xlsx');
-    return SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
-        update: true);
-  }
+  insertRowDataBase(List<dynamic> data) {
+    var maxRowsOld = _sheet.maxRows;
+    print('pre insert maxOld ' + maxRowsOld.toString());
 
-
-  insertRowDataBase(List<dynamic> data) async {
-    var decode = await _decoderDatabase();
-
-    var sheet = decode.tables[decode.tables.keys.first];
-
-    decode.insertRow(sheet.name, (sheet.maxRows));
-
+    _decoder.insertRow(_sheet.name, _sheet.maxRows);
 
     for (var pos = 0; pos < data.length; pos++) {
-      decode.updateCell(sheet.name, pos, (sheet.maxRows-1), data[pos]??'');
+      _decoder.updateCell(
+          _sheet.name, pos, (_sheet.maxRows - 1), data[pos] ?? '');
     }
 
-//    File(join(pathSheet))
-//      ..createSync(recursive: true)
-//      ..writeAsBytesSync(decode.encode());
+    print('sheet max ' + _sheet.maxRows.toString());
 
-//    print('inserindo nova linha e criando arquivo output');
-
-    return decode;
-
-
+    return maxRowsOld < _sheet.maxRows;
   }
 
-  createOutput(decode){
-    return File(join(pathSheet))..create(recursive: true)..writeAsBytes(decode.encode());
+  _insertCollumnDataBase(int maxCollumn) {
+    List.generate(
+        maxCollumn, (index) => _decoder.insertColumn(_sheet.name, index));
 
+    print(_sheet.maxCols);
   }
 
-  printSheet() async {
-    SpreadsheetDecoder decoder = SpreadsheetDecoder.decodeBytes(
-        (await File(pathSheet).readAsBytes()),
-        update: true);
+  _createOutputFile() async {
+    var path = (await getExternalStorageDirectory()).path + '/Output Ativo Fixo.xlsx';
 
-    print("************************************************************");
-    for (var table in decoder.tables.keys) {
-      print(table);
-      print(decoder.tables[table].maxCols);
-      print(decoder.tables[table].maxRows);
-      for (var row in decoder.tables[table].rows) {
-        print("$row");
-      }
-    }
-    print("************************************************************");
-  }
-
-  insertDataSheet(List listData) async {
-    var column = 0;
-    var rows = listData?.length ?? 0;
-    SpreadsheetDecoder decoder = await _decoder();
-    var sheet = decoder.tables.keys.first;
-
-    if (rows > 0) {
-      decoder.insertColumn(sheet, column);
-      for (var i = 0; i < rows; i++) {
-        decoder.insertRow(sheet, i);
-        decoder.updateCell(sheet, column, i, listData[i]);
-      }
-    }
-
-    File(join(pathSheet))
-      ..createSync(recursive: true)
-      ..writeAsBytesSync(decoder.encode());
-
-    printSheet();
+    return File(join(path))
+      ..create(recursive: true)
+      ..writeAsBytes(_decoder.encode());
   }
 
   Future<List<dynamic>> getDataBase() async {
@@ -99,7 +66,42 @@ class Sheet {
     var decoder = SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
         update: true);
 
-
     return decoder.tables[decoder.tables.keys.first].rows;
   }
+
+  createOutput(List<Data> ativos, {Data cabecalho}) async {
+    if (ativos.length > 0) {
+      _insertCollumnDataBase(ativos[0].toJson().length);
+    }
+
+    if (cabecalho != null)
+      insertRowDataBase(cabecalho.toJson().values.toList());
+
+    for (var i = 0; i < ativos.length; ++i) {
+      Data ativo = ativos[i];
+      insertRowDataBase(ativo.toJson().values.toList());
+    }
+
+    printSheet();
+
+    _createOutputFile();
+  }
+
+  printSheet() async {
+//    SpreadsheetDecoder decoder = SpreadsheetDecoder.decodeBytes(
+//        (await File(pathSheet).readAsBytes()),
+//        update: true);
+
+    print("************************************************************");
+    for (var table in _decoder.tables.keys) {
+      print(table);
+      print(_decoder.tables[table].maxCols);
+      print(_decoder.tables[table].maxRows);
+      for (var row in _decoder.tables[table].rows) {
+        print("$row");
+      }
+    }
+    print("************************************************************");
+  }
+
 }

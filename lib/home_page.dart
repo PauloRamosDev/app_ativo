@@ -1,6 +1,8 @@
 import 'package:appativo/details_page.dart';
 import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
+import 'package:appativo/sheet.dart';
+import 'package:appativo/sqlite/database_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +19,36 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista de ativos'),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.insert_drive_file),
+              onPressed: () async {
+                var sheet = Sheet();
+                DatabaseDAO dao = DatabaseDAO();
+                await sheet.initialization();
+
+                var cabecalho = await dao.headers();
+                var database = await dao.findAll();
+
+                sheet.createOutput(database, cabecalho: cabecalho);
+              }),
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () async {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Container(),
+                      );
+                    });
+              }),
+        ],
       ),
       body: _bodyConsumer(),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            //Todo: criar pagina para novo ativo
             Navigator.push(
                 context, MaterialPageRoute(builder: (_) => EditPage()));
           }),

@@ -26,23 +26,21 @@ class _DetailsPageState extends State<DetailsPage> {
         title: Text('Detalhes'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () async {
-                var registro = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => EditPage(
-                              data: widget.data,
-                            )));
+            icon: Icon(Icons.edit),
+            onPressed: () async {
+              var registro = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => EditPage(
+                            data: widget.data,
+                          )));
 
-                if(registro!=null){
-                  setState(() {
-                    widget.data = registro;
-                  });
-                }
-
-              },
-
+              if (registro != null) {
+                setState(() {
+                  widget.data = registro;
+                });
+              }
+            },
           )
         ],
       ),

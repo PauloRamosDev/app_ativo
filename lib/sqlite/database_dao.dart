@@ -43,6 +43,16 @@ class DatabaseDAO {
     return null;
   }
 
+  Future<List<Data>> seachSqlite(String value)async{
+    var dbClient = await db;
+    final list = await dbClient.rawQuery(
+        'select * from ${SqlHelper.tableDatabase}');
+
+    return list.map<Data>((e) => Data.fromJson(e)).toList();
+
+
+  }
+
   Future<Data> headers() async {
     final dbClient = await db;
 
