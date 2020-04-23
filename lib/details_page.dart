@@ -1,3 +1,4 @@
+import 'package:appativo/edit/widget_image.dart';
 import 'package:appativo/provider/provider_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class _DetailsPageState extends State<DetailsPage> {
             Center(
               child: Container(
                 height: 250,
-                child: _image(widget.data.fieldSeven),
+                child: ImageView(widget.data.fieldSeven),
               ),
             ),
             labelDescription(_cabecalho.fieldOne),
@@ -97,23 +98,5 @@ class _DetailsPageState extends State<DetailsPage> {
         textAlign: TextAlign.center,
       ),
     );
-  }
-
-  _image(String fieldSeven) {
-    if (fieldSeven != null &&
-        fieldSeven != 'INACESSÍVEL' &&
-        fieldSeven.isNotEmpty) {
-      return Image.asset(
-        'assets/melville/$fieldSeven.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-      );
-    } else {
-      return Image.asset(
-        'assets/melville/nopick.jpg',
-        fit: BoxFit.cover,
-        width: double.infinity,
-      );
-    }
   }
 }

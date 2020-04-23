@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:appativo/edit/widget_image.dart';
 import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'bloc_edit.dart';
@@ -54,44 +59,44 @@ class _EditPageState extends State<EditPage> {
                       readOnly: bloc.tipo == 'Editar Ativo',
                       onChanged: (value) => bloc.patrimonio = value,
                       sugetionList: provider.sugestionList(1),
-                      initialValue: bloc.tipo == 'Editar Ativo'
-                          ? widget.data.fieldOne
-                          : '',
+                      initialValue:
+                          bloc.tipo == 'Editar Ativo' ? bloc.patrimonio : '',
                     ),
                     editText(
                       provider.cabecalho.fieldTwo,
                       onChanged: (value) => bloc.descricao = value,
                       sugetionList: provider.sugestionList(2),
-                      initialValue: bloc.tipo == 'Editar Ativo'
-                          ? widget.data.fieldTwo
-                          : '',
+                      initialValue:
+                          bloc.tipo == 'Editar Ativo' ? bloc.descricao : '',
                     ),
                     editText(
                       provider.cabecalho.fieldTree,
                       sugetionList: provider.sugestionList(3),
                       onChanged: (value) => bloc.marca = value,
-                      initialValue: bloc.tipo == 'Editar Ativo'
-                          ? widget.data.fieldTree
-                          : '',
+                      initialValue:
+                          bloc.tipo == 'Editar Ativo' ? bloc.marca : '',
                     ),
                     editText(provider.cabecalho.fieldFour,
                         onChanged: (value) => bloc.modelo = value,
-                        initialValue: bloc.tipo == 'Editar Ativo'
-                            ? widget.data.fieldFour
-                            : ''),
+                        initialValue:
+                            bloc.tipo == 'Editar Ativo' ? bloc.modelo : ''),
                     editText(provider.cabecalho.fieldFive,
                         onChanged: (value) => bloc.medidas = value,
-                        initialValue: bloc.tipo == 'Editar Ativo'
-                            ? widget.data.fieldFive
-                            : ''),
+                        initialValue:
+                            bloc.tipo == 'Editar Ativo' ? bloc.medidas : ''),
                     editText(provider.cabecalho.fieldSix,
                         onChanged: (value) => bloc.localizacao = value,
                         sugetionList: provider.sugestionList(6),
-                        initialValue: bloc.tipo == 'Editar Ativo'
-                            ? widget.data.fieldSix
-                            : ''),
-
-
+                        initialValue:
+                            bloc.tipo == 'Editar Ativo' ? bloc.numeroFoto : ''),
+                    ImageViewPicker(
+                        pathNewImage: (newPath) {
+                          if (newPath != null)
+                            setState(() {
+                              bloc.numeroFoto = newPath;
+                            });
+                        },
+                        path: bloc.numeroFoto??'')
                   ],
                 ),
               ),
@@ -101,9 +106,9 @@ class _EditPageState extends State<EditPage> {
 
                   print(commit);
 
-
-
-                  commit != null ? Navigator.of(context).pop(bloc.registro) : print(commit);
+                  commit != null
+                      ? Navigator.of(context).pop(bloc.registro)
+                      : print(commit);
                 },
                 child: Text(bloc.tipo == 'Novo Ativo'
                     ? 'Adicionar'

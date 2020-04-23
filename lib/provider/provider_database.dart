@@ -14,7 +14,6 @@ class ProviderDatabase with ChangeNotifier {
   }
 
   insert(Data data) async {
-
     var insert = await dao.insert(data);
 
     if (insert > 0) {
@@ -39,7 +38,6 @@ class ProviderDatabase with ChangeNotifier {
   }
 
   getDataBase() async {
-
     print('getDataBase');
     if ((await dao.count()) > 0) {
       print('banco de dados já populado');
@@ -75,44 +73,56 @@ class ProviderDatabase with ChangeNotifier {
     switch (index) {
       case 1:
         {
-          return database.map<String>((e) => e.fieldOne).toList();
+          return _distinct(database.map<String>((e) => e.fieldOne).toList());
         }
         break;
       case 2:
         {
-          return database.map<String>((e) => e.fieldTwo).toList();
+          return _distinct(database.map<String>((e) => e.fieldTwo).toList());
         }
         break;
       case 3:
         {
-          return database.map<String>((e) => e.fieldTree).toList();
+          return _distinct(database.map<String>((e) => e.fieldTree).toList());
         }
         break;
       case 4:
         {
-          return database.map<String>((e) => e.fieldFour).toList();
+          return _distinct(database.map<String>((e) => e.fieldFour).toList());
         }
         break;
       case 5:
         {
-          return database.map<String>((e) => e.fieldFive).toList();
+          return _distinct(database.map<String>((e) => e.fieldFive).toList());
         }
         break;
       case 6:
         {
-          return database.map<String>((e) => e.fieldSix).toList();
+          return _distinct(database.map<String>((e) => e.fieldSix).toList());
         }
         break;
       case 7:
         {
-          return database.map<String>((e) => e.fieldSeven).toList();
+          return _distinct(database.map<String>((e) => e.fieldSeven).toList());
         }
         break;
       case 8:
         {
-          return database.map<String>((e) => e.fieldEigth).toList();
+          return _distinct(database.map<String>((e) => e.fieldEigth).toList());
         }
         break;
     }
+  }
+
+  _distinct(fullSugestions) {
+    var distinct = <String>[];
+
+    fullSugestions.forEach((element) {
+      if (!distinct.contains(element)) {
+        distinct.add(element);
+      }
+    });
+
+    return distinct;
   }
 }
