@@ -56,6 +56,7 @@ class _EditPageState extends State<EditPage> {
                   children: <Widget>[
                     editText(
                       provider.cabecalho.fieldOne,
+                      textFieldConfiguration: TextFieldConfiguration(keyboardType: TextInputType.number),
                       readOnly: bloc.tipo == 'Editar Ativo',
                       onChanged: (value) => bloc.patrimonio = value,
                       sugetionList: provider.sugestionList(1),
@@ -88,7 +89,8 @@ class _EditPageState extends State<EditPage> {
                         onChanged: (value) => bloc.localizacao = value,
                         sugetionList: provider.sugestionList(6),
                         initialValue:
-                            bloc.tipo == 'Editar Ativo' ? bloc.numeroFoto : ''),
+                            bloc.tipo == 'Editar Ativo' ? bloc.localizacao : ''),
+                    Container(height: 8,),
                     ImageViewPicker(
                         pathNewImage: (newPath) {
                           if (newPath != null)

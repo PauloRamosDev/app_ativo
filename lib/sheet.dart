@@ -13,9 +13,6 @@ class Sheet {
 
   Sheet();
 
-//  var _maxCollumn;
-//  var _maxRows;
-
   initialization() async {
     _decoder = await _decoderModel();
     _sheet = _decoder.tables[_decoder.tables.keys.first];
@@ -27,7 +24,7 @@ class Sheet {
         update: true);
   }
 
-  insertRowDataBase(List<dynamic> data) {
+  _insertRowDataBase(List<dynamic> data) {
     var maxRowsOld = _sheet.maxRows;
     print('pre insert maxOld ' + maxRowsOld.toString());
 
@@ -75,16 +72,16 @@ class Sheet {
     }
 
     if (cabecalho != null)
-      insertRowDataBase(cabecalho.toJson().values.toList());
+      _insertRowDataBase(cabecalho.toJson().values.toList());
 
     for (var i = 0; i < ativos.length; ++i) {
       Data ativo = ativos[i];
-      insertRowDataBase(ativo.toJson().values.toList());
+      _insertRowDataBase(ativo.toJson().values.toList());
     }
 
     printSheet();
 
-    _createOutputFile();
+    return _createOutputFile();
   }
 
   printSheet() async {
