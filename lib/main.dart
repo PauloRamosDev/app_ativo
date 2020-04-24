@@ -1,4 +1,4 @@
-import 'package:appativo/home_page.dart';
+import 'package:appativo/home/home_page.dart';
 import 'package:appativo/provider/provider_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -8,6 +8,7 @@ class ProviderDatabase with ChangeNotifier {
   List<Data> database = [];
   bool carregado = false;
   Data cabecalho;
+  var filter;
 
   ProviderDatabase() {
     _getDataBase();
@@ -58,6 +59,7 @@ class ProviderDatabase with ChangeNotifier {
           fieldFive: registro[4] != null ? registro[4].toString() : '',
           fieldSix: registro[5] != null ? registro[5].toString() : '',
           fieldSeven: registro[6] != null ? registro[6].toString() : '',
+          fieldEigth: registro[7] != null ? registro[7].toString() : 'NÃO',
         );
 
         i == 0 ? await dao.insertHeader(data.toJson()) : await dao.insert(data);

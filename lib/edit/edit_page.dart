@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:appativo/edit/widget_image.dart';
 import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'bloc_edit.dart';
@@ -25,6 +22,29 @@ class _EditPageState extends State<EditPage> {
   var provider;
   BlocEdit bloc;
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+
+  final Map<String, Widget> children = const {
+    'SIM': Padding(
+      padding: EdgeInsets.all(8),
+      child: Text(
+        'SIM',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+    ),
+    'NÃO': Padding(
+      padding: EdgeInsets.all(8),
+      child: Text(
+        'NÃO',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+    ),
+  };
 
   @override
   void initState() {
@@ -56,7 +76,8 @@ class _EditPageState extends State<EditPage> {
                   children: <Widget>[
                     editText(
                       provider.cabecalho.fieldOne,
-                      textFieldConfiguration: TextFieldConfiguration(keyboardType: TextInputType.number),
+                      textFieldConfiguration: TextFieldConfiguration(
+                          keyboardType: TextInputType.number),
                       readOnly: bloc.tipo == 'Editar Ativo',
                       onChanged: (value) => bloc.patrimonio = value,
                       sugetionList: provider.sugestionList(1),
@@ -67,6 +88,11 @@ class _EditPageState extends State<EditPage> {
                       provider.cabecalho.fieldTwo,
                       onChanged: (value) => bloc.descricao = value,
                       sugetionList: provider.sugestionList(2),
+                      textFieldConfiguration: TextFieldConfiguration(
+                        maxLines: 5,
+                        minLines: 1,
+                        textCapitalization: TextCapitalization.characters,
+                      ),
                       initialValue:
                           bloc.tipo == 'Editar Ativo' ? bloc.descricao : '',
                     ),
@@ -79,6 +105,7 @@ class _EditPageState extends State<EditPage> {
                     ),
                     editText(provider.cabecalho.fieldFour,
                         onChanged: (value) => bloc.modelo = value,
+                        sugetionList: provider.sugestionList(4),
                         initialValue:
                             bloc.tipo == 'Editar Ativo' ? bloc.modelo : ''),
                     editText(provider.cabecalho.fieldFive,
@@ -88,9 +115,28 @@ class _EditPageState extends State<EditPage> {
                     editText(provider.cabecalho.fieldSix,
                         onChanged: (value) => bloc.localizacao = value,
                         sugetionList: provider.sugestionList(6),
-                        initialValue:
-                            bloc.tipo == 'Editar Ativo' ? bloc.localizacao : ''),
-                    Container(height: 8,),
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? bloc.localizacao
+                            : ''),
+                    Center(
+                        child: Text(
+                      provider.cabecalho.fieldEigth,
+                    )),
+                    Container(
+                      child: CupertinoSegmentedControl<String>(
+                        padding: EdgeInsets.all(8),
+                        children: children,
+                        onValueChanged: (newValue) {
+                          setState(() {
+                            bloc.verificado = newValue;
+                          });
+                        },
+                        groupValue: bloc.verificado,
+                      ),
+                    ),
+                    Container(
+                      height: 8,
+                    ),
                     ImageViewPicker(
                         pathNewImage: (newPath) {
                           if (newPath != null)
@@ -98,11 +144,13 @@ class _EditPageState extends State<EditPage> {
                               bloc.numeroFoto = newPath;
                             });
                         },
-                        path: bloc.numeroFoto??'')
+                        path: bloc.numeroFoto ?? '')
                   ],
                 ),
               ),
               RaisedButton(
+                color: Colors.green,
+                textColor: Colors.white,
                 onPressed: () async {
                   var commit = await bloc.commit(context);
 
@@ -113,8 +161,8 @@ class _EditPageState extends State<EditPage> {
                       : print(commit);
                 },
                 child: Text(bloc.tipo == 'Novo Ativo'
-                    ? 'Adicionar'
-                    : 'Salvar Alterações'),
+                    ? 'ADICIONAR'
+                    : 'SALVAR ALTERAÇÕES'),
               )
             ],
           ),

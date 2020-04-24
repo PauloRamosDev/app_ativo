@@ -68,6 +68,8 @@ class _DetailsPageState extends State<DetailsPage> {
             label(widget.data.fieldSix),
             labelDescription(_cabecalho.fieldSeven),
             label(widget.data.fieldSeven),
+            labelDescription(_cabecalho.fieldEigth),
+            label(widget.data.fieldEigth),
           ],
         ),
       ),

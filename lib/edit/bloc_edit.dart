@@ -30,6 +30,7 @@ class BlocEdit {
       verificado = data.fieldEigth;
     } else {
       this.tipo = 'Novo Ativo';
+      this.verificado = 'SIM';
     }
 
     print(tipo);
