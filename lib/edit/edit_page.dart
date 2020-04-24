@@ -40,6 +40,11 @@ class _EditPageState extends State<EditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<int, Widget> children = const {
+      0: Text('SIM'),
+      1: Text('NÃO'),
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: Text(bloc.tipo),
@@ -56,7 +61,8 @@ class _EditPageState extends State<EditPage> {
                   children: <Widget>[
                     editText(
                       provider.cabecalho.fieldOne,
-                      textFieldConfiguration: TextFieldConfiguration(keyboardType: TextInputType.number),
+                      textFieldConfiguration: TextFieldConfiguration(
+                          keyboardType: TextInputType.number),
                       readOnly: bloc.tipo == 'Editar Ativo',
                       onChanged: (value) => bloc.patrimonio = value,
                       sugetionList: provider.sugestionList(1),
@@ -88,9 +94,16 @@ class _EditPageState extends State<EditPage> {
                     editText(provider.cabecalho.fieldSix,
                         onChanged: (value) => bloc.localizacao = value,
                         sugetionList: provider.sugestionList(6),
-                        initialValue:
-                            bloc.tipo == 'Editar Ativo' ? bloc.localizacao : ''),
-                    Container(height: 8,),
+                        initialValue: bloc.tipo == 'Editar Ativo'
+                            ? bloc.localizacao
+                            : ''),
+                    CupertinoSegmentedControl(
+
+                        children: children,
+                        onValueChanged: (value) => print(value),),
+                    Container(
+                      height: 8,
+                    ),
                     ImageViewPicker(
                         pathNewImage: (newPath) {
                           if (newPath != null)
@@ -98,7 +111,7 @@ class _EditPageState extends State<EditPage> {
                               bloc.numeroFoto = newPath;
                             });
                         },
-                        path: bloc.numeroFoto??'')
+                        path: bloc.numeroFoto ?? '')
                   ],
                 ),
               ),

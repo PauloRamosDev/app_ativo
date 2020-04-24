@@ -13,7 +13,7 @@ class BlocEdit {
   String modelo = '';
   String medidas = '';
   String numeroFoto;
-  String verificado = '';
+  String verificado = 'NÃO';
 
   BlocEdit(this.data) {
     if (data != null) {
@@ -27,6 +27,7 @@ class BlocEdit {
       medidas = data.fieldFive;
       localizacao = data.fieldSix;
       numeroFoto = data.fieldSeven;
+      verificado = data.fieldEigth;
       verificado = data.fieldEigth;
     } else {
       this.tipo = 'Novo Ativo';
@@ -65,7 +66,8 @@ class BlocEdit {
             fieldTree: marca,
             fieldFour: modelo,
             fieldFive: medidas,
-            fieldSeven: numeroFoto ?? data.fieldSeven);
+            fieldSeven: numeroFoto ?? data.fieldSeven,
+            fieldEigth: verificado);
         return await provider.update(registro);
       }
       return null;
@@ -92,6 +94,7 @@ class BlocEdit {
         fieldFour: modelo,
         fieldFive: medidas,
         fieldSeven: numeroFoto ?? 'INACESSÍVEL',
+        fieldEigth: verificado,
       );
 
       return await provider.insert(registro);
