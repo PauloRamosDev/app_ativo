@@ -28,7 +28,6 @@ class BlocEdit {
       localizacao = data.fieldSix;
       numeroFoto = data.fieldSeven;
       verificado = data.fieldEigth;
-      verificado = data.fieldEigth;
     } else {
       this.tipo = 'Novo Ativo';
     }
@@ -87,15 +86,14 @@ class BlocEdit {
         descricao.isNotEmpty &&
         localizacao.isNotEmpty) {
       registro = Data(
-        fieldOne: patrimonio,
-        fieldTwo: descricao,
-        fieldSix: localizacao,
-        fieldTree: marca,
-        fieldFour: modelo,
-        fieldFive: medidas,
-        fieldSeven: numeroFoto ?? 'INACESSÍVEL',
-        fieldEigth: verificado,
-      );
+          fieldOne: patrimonio,
+          fieldTwo: descricao,
+          fieldSix: localizacao,
+          fieldTree: marca,
+          fieldFour: modelo,
+          fieldFive: medidas,
+          fieldSeven: numeroFoto ?? 'INACESSÍVEL',
+          fieldEigth: verificado);
 
       return await provider.insert(registro);
     }
