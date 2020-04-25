@@ -66,9 +66,7 @@ class DatabaseDAO {
     final list =
         await dbClient.rawQuery('select * from ${SqlHelper.tableDatabase}');
 
-    final funcionarios = list.map<Data>((json) => Data.fromJson(json)).toList();
-
-    return funcionarios;
+    return list.map<Data>((json) => Data.fromJson(json)).toList();
   }
 
   Future<List<String>> findSugestions(coluna) async {
@@ -94,11 +92,11 @@ class DatabaseDAO {
     return Sqflite.firstIntValue(list);
   }
 
-  Future<List<Data>> orderBy(field) async {
+  Future<List<Data>> orderBy(field, {order = 'ASC'}) async {
     var dbClient = await db;
 
     var list = await dbClient.rawQuery(
-        'SELECT * FROM ${SqlHelper.tableDatabase} ORDER BY $field ASC');
+        'SELECT * FROM ${SqlHelper.tableDatabase} ORDER BY $field $order');
 
     return list.map<Data>((json) => Data.fromJson(json)).toList();
   }

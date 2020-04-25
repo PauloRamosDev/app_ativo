@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<ProviderDatabase>(context).cabecalho;
+    var provider = Provider.of<ProviderDatabase>(context);
 
     return Scaffold(
 //      drawer: Drawer(),
@@ -56,8 +56,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditPage(data: result)));
               }),
-          OrderList(provider != null ? provider.toJson().values.toList() : [],
-              context)
+          OrderList(provider?.cabecalho?.toJson(),
+              context,init: provider.filter,)
         ],
       ),
       body: _bodyConsumer(),
@@ -87,12 +87,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   ListView _body(BuildContext context, List<Data> list) {
-    var listReversed = list.reversed.toList();
     return ListView.builder(
         itemCount: list.length,
         itemBuilder: (_, index) {
           if (list.length > 0) {
-            var data = listReversed[index];
+            var data = list[index];
             var color = data.fieldEigth == 'SIM' ? Colors.green : null;
             return ListTile(
               onLongPress: () => _dialogEdit(data, context),

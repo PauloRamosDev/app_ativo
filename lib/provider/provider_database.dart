@@ -9,6 +9,7 @@ class ProviderDatabase with ChangeNotifier {
   bool carregado = false;
   Data cabecalho;
   var filter;
+  var filterASC = true;
 
   ProviderDatabase() {
     _getDataBase();
@@ -83,8 +84,8 @@ class ProviderDatabase with ChangeNotifier {
     }
   }
 
-  orderByList(field) async {
-    var order = await dao.orderBy(field);
+  orderByList(field,orderBY) async {
+    var order = await dao.orderBy(field,order:orderBY?'ASC':'DESC');
     if (order != null && order.length > 0) {
       database = order;
       notifyListeners();
