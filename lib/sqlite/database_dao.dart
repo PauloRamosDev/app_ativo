@@ -3,10 +3,7 @@ import 'package:appativo/sqlite/sql_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseDAO {
-  Future<Database> get db =>
-      SqlHelper
-          .getInstance()
-          .db;
+  Future<Database> get db => SqlHelper.getInstance().db;
 
   Future<int> insert(Data registro) async {
     var dbClient = await db;
@@ -43,27 +40,22 @@ class DatabaseDAO {
     return null;
   }
 
-  Future<List<Data>> seachSqlite(String value)async{
+  Future<List<Data>> seachSqlite(String value) async {
     var dbClient = await db;
-    final list = await dbClient.rawQuery(
-        'select * from ${SqlHelper.tableDatabase}');
+    final list =
+        await dbClient.rawQuery('select * from ${SqlHelper.tableDatabase}');
 
     return list.map<Data>((e) => Data.fromJson(e)).toList();
-
-
   }
 
   Future<Data> headers() async {
     final dbClient = await db;
 
     final list =
-    await dbClient.rawQuery('select * from ${SqlHelper.tableHeaders}');
+        await dbClient.rawQuery('select * from ${SqlHelper.tableHeaders}');
 
     final headers =
-        list
-            .map<Data>((json) => Data.fromJson(json))
-            .toList()
-            .first;
+        list.map<Data>((json) => Data.fromJson(json)).toList().first;
 
     return headers;
   }
@@ -72,7 +64,7 @@ class DatabaseDAO {
     final dbClient = await db;
 
     final list =
-    await dbClient.rawQuery('select * from ${SqlHelper.tableDatabase}');
+        await dbClient.rawQuery('select * from ${SqlHelper.tableDatabase}');
 
     final funcionarios = list.map<Data>((json) => Data.fromJson(json)).toList();
 
@@ -82,10 +74,8 @@ class DatabaseDAO {
   Future<List<String>> findSugestions(coluna) async {
     final dbClient = await db;
 
-    final list =
-    await dbClient.rawQuery(
-        'SELECT DISTINCTt $coluna FROM ${SqlHelper.tableDatabase}');
-
+    final list = await dbClient
+        .rawQuery('SELECT DISTINCTt $coluna FROM ${SqlHelper.tableDatabase}');
 
     return list.map<String>((e) => e.values.first.toString()).toList();
   }
@@ -102,5 +92,14 @@ class DatabaseDAO {
     final list = await dbClient
         .rawQuery('select count(*) from ${SqlHelper.tableDatabase}');
     return Sqflite.firstIntValue(list);
+  }
+
+  Future<List<Data>> orderBy(field) async {
+    var dbClient = await db;
+
+    var list = await dbClient.rawQuery(
+        'SELECT * FROM ${SqlHelper.tableDatabase} ORDER BY $field ASC');
+
+    return list.map<Data>((json) => Data.fromJson(json)).toList();
   }
 }

@@ -38,39 +38,6 @@ class ProviderDatabase with ChangeNotifier {
     return null;
   }
 
-  _getDataBase() async {
-    print('getDataBase');
-    if ((await dao.count()) > 0) {
-      print('banco de dados já populado');
-      database.addAll((await dao.findAll()));
-      cabecalho = await dao.headers();
-    } else {
-      print('populando bd pela primeira vez');
-      var base = await Sheet().getDataBase();
-
-      for (var i = 0; i < base.length; ++i) {
-        var registro = base[i];
-
-        var data = Data(
-          fieldOne: registro[0] != null ? registro[0].toString() : '',
-          fieldTwo: registro[1] != null ? registro[1].toString() : '',
-          fieldTree: registro[2] != null ? registro[2].toString() : '',
-          fieldFour: registro[3] != null ? registro[3].toString() : '',
-          fieldFive: registro[4] != null ? registro[4].toString() : '',
-          fieldSix: registro[5] != null ? registro[5].toString() : '',
-          fieldSeven: registro[6] != null ? registro[6].toString() : '',
-          fieldEigth: registro[7] != null ? registro[7].toString() : 'NÃO',
-        );
-
-        i == 0 ? await dao.insertHeader(data.toJson()) : await dao.insert(data);
-      }
-      database.addAll((await dao.findAll()));
-      cabecalho = await dao.headers();
-    }
-    carregado = true;
-    notifyListeners();
-  }
-
   sugestionList(index) {
     switch (index) {
       case 1:
@@ -114,6 +81,47 @@ class ProviderDatabase with ChangeNotifier {
         }
         break;
     }
+  }
+
+  orderByList(field) async {
+    var order = await dao.orderBy(field);
+    if (order != null && order.length > 0) {
+      database = order;
+      notifyListeners();
+    }
+  }
+
+  _getDataBase() async {
+    print('getDataBase');
+    if ((await dao.count()) > 0) {
+      print('banco de dados já populado');
+      database.addAll((await dao.findAll()));
+      cabecalho = await dao.headers();
+    } else {
+      print('populando bd pela primeira vez');
+      var base = await Sheet().getDataBase();
+
+      for (var i = 0; i < base.length; ++i) {
+        var registro = base[i];
+
+        var data = Data(
+          fieldOne: registro[0] != null ? registro[0].toString() : '',
+          fieldTwo: registro[1] != null ? registro[1].toString() : '',
+          fieldTree: registro[2] != null ? registro[2].toString() : '',
+          fieldFour: registro[3] != null ? registro[3].toString() : '',
+          fieldFive: registro[4] != null ? registro[4].toString() : '',
+          fieldSix: registro[5] != null ? registro[5].toString() : '',
+          fieldSeven: registro[6] != null ? registro[6].toString() : '',
+          fieldEigth: registro[7] != null ? registro[7].toString() : 'NÃO',
+        );
+
+        i == 0 ? await dao.insertHeader(data.toJson()) : await dao.insert(data);
+      }
+      database.addAll((await dao.findAll()));
+      cabecalho = await dao.headers();
+    }
+    carregado = true;
+    notifyListeners();
   }
 
   _distinct(fullSugestions) {

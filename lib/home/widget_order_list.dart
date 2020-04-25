@@ -3,21 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OrderList extends StatefulWidget {
+  final List filters;
+  final BuildContext context;
+
+  OrderList(this.filters, this.context){
+    filters.removeAt(0);
+  }
+
   @override
   _OrderListState createState() => _OrderListState();
 }
 
 class _OrderListState extends State<OrderList> {
+
   @override
   Widget build(BuildContext context) {
-    var cabecalho = Provider.of<ProviderDatabase>(context).cabecalho.toJson().values.toList();
-
     return PopupMenuButton(
-        offset: Offset(100, 50),
-        icon: Icon(Icons.filter_list),
-        itemBuilder: (context) {
-          return List.generate(cabecalho.length,
-              (index) => PopupMenuItem(child: Text(cabecalho[index].toString())));
-        });
+      offset: Offset(100, 50),
+      icon: Icon(Icons.filter_list),
+      itemBuilder: (context) {
+        return List.generate(
+            widget.filters.length,
+            (index) => PopupMenuItem(
+                value: widget.filters[index].toString(),
+                child: Text(widget.filters[index].toString())));
+      },
+      onSelected: (value) =>
+          Provider.of<ProviderDatabase>(context, listen: false)
+              .orderByList(value),
+    );
   }
 }

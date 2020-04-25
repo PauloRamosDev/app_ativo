@@ -19,8 +19,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ProviderDatabase>(context).cabecalho;
+
     return Scaffold(
-      drawer: Drawer(),
+//      drawer: Drawer(),
       appBar: AppBar(
         title: Text('Lista de ativos'),
         actions: <Widget>[
@@ -39,11 +41,6 @@ class _HomePageState extends State<HomePage> {
 
                 OpenFile.open(output.path);
               }),
-          PopupMenuButton(
-            offset: Offset(100, 50),
-            icon: Icon(Icons.filter_list),
-            itemBuilder: (_) => [PopupMenuItem(child: Text('localizações'))],
-          ),
           IconButton(
               icon: Icon(Icons.search),
               onPressed: () async {
@@ -59,7 +56,8 @@ class _HomePageState extends State<HomePage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditPage(data: result)));
               }),
-          OrderList()
+          OrderList(provider != null ? provider.toJson().values.toList() : [],
+              context)
         ],
       ),
       body: _bodyConsumer(),
