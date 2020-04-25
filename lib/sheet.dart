@@ -11,8 +11,6 @@ class Sheet {
   SpreadsheetTable _sheet;
   SpreadsheetDecoder _decoder;
 
-  Sheet();
-
   initialization() async {
     _decoder = await _decoderModel();
     _sheet = _decoder.tables[_decoder.tables.keys.first];
@@ -48,7 +46,8 @@ class Sheet {
   }
 
   _createOutputFile() async {
-    var path = (await getExternalStorageDirectory()).path + '/Output Ativo Fixo.xlsx';
+    var path =
+        (await getExternalStorageDirectory()).path + '/Output Ativo Fixo.xlsx';
 
     return File(join(path))
       ..create(recursive: true)
@@ -56,9 +55,6 @@ class Sheet {
   }
 
   Future<List<dynamic>> getDataBase() async {
-    //colunas = 7
-    //linhas = 379
-
     var bytesData = await rootBundle.load('assets/xlsx/Melville.xlsx');
     var decoder = SpreadsheetDecoder.decodeBytes(bytesData.buffer.asUint8List(),
         update: true);
@@ -100,5 +96,4 @@ class Sheet {
     }
     print("************************************************************");
   }
-
 }

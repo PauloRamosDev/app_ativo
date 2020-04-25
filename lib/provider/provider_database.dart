@@ -19,9 +19,7 @@ class ProviderDatabase with ChangeNotifier {
     var insert = await dao.insert(data);
 
     if (insert > 0) {
-      database = await dao.findAll();
-      notifyListeners();
-
+      orderByList(filter, filterASC);
       return insert;
     }
     return null;
@@ -31,8 +29,7 @@ class ProviderDatabase with ChangeNotifier {
     var update = await dao.update(data, data.id);
 
     if (update > 0) {
-      database = await dao.findAll();
-      notifyListeners();
+      orderByList(filter, filterASC);
 
       return update;
     }
@@ -84,8 +81,8 @@ class ProviderDatabase with ChangeNotifier {
     }
   }
 
-  orderByList(field,orderBY) async {
-    var order = await dao.orderBy(field,order:orderBY?'ASC':'DESC');
+  orderByList(field, orderBY) async {
+    var order = await dao.orderBy(field, order: orderBY ? 'ASC' : 'DESC');
     if (order != null && order.length > 0) {
       database = order;
       notifyListeners();

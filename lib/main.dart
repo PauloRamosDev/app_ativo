@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         title: 'Ativo Fixo',
         theme: ThemeData(
           primarySwatch: Colors.green,
+          accentColor: Colors.green
         ),
         home: HomePage(),
       ),

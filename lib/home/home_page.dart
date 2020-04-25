@@ -2,7 +2,7 @@ import 'package:appativo/details_page.dart';
 import 'package:appativo/home/widget_order_list.dart';
 import 'package:appativo/models/model_data.dart';
 import 'package:appativo/provider/provider_database.dart';
-import 'package:appativo/search.dart';
+import 'package:appativo/home/widget_search.dart';
 import 'package:appativo/sheet.dart';
 import 'package:appativo/sqlite/database_dao.dart';
 import 'package:flutter/material.dart';
