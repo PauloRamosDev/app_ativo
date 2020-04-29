@@ -133,4 +133,5 @@ class ProviderDatabase with ChangeNotifier {
 
     return distinct;
   }
+
 }

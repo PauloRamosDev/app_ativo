@@ -45,6 +45,7 @@ class _DetailsPageState extends State<DetailsPage> {
         ],
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

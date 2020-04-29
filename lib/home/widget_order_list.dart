@@ -44,6 +44,7 @@ class _OrderListState extends State<OrderList> {
 
           provider.orderByList(value, provider.filterASC);
         } else {
+          provider.filterASC = true;
           provider.orderByList(value, provider.filterASC);
           provider.filter = value;
         }

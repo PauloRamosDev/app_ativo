@@ -20,11 +20,7 @@ class ImageView extends StatelessWidget {
           width: double.infinity,
         );
       } else {
-        return Image.asset(
-          'assets/melville/nopick.jpg',
-          fit: BoxFit.cover,
-          width: double.infinity,
-        );
+        return Icon(Icons.camera_alt,size: 250,);
       }
     }
   }
@@ -40,7 +36,7 @@ class ImageViewPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green.shade300,
+      color: Colors.white10,
       height: 300,
       child: GestureDetector(
         child: ImageView(path),
