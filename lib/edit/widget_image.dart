@@ -41,7 +41,7 @@ class ImageViewPicker extends StatelessWidget {
       child: GestureDetector(
         child: ImageView(path),
         onTap: () async {
-          var image = await ImagePicker.pickImage(source: ImageSource.camera);
+          var image = await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 1024,maxWidth: 1024);
           pathNewImage(image.path);
         },
       ),
