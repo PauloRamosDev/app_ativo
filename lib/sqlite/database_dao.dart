@@ -92,11 +92,36 @@ class DatabaseDAO {
     return Sqflite.firstIntValue(list);
   }
 
+  Future<int> countToSend() async {
+    final dbClient = await db;
+
+    final list = await dbClient.rawQuery(
+        'SELECT COUNT(*) FROM ${SqlHelper.tableDatabase} WHERE sent = 0');
+    return Sqflite.firstIntValue(list);
+  }
+
+  Future<int> countSent() async {
+    final dbClient = await db;
+
+    final list = await dbClient.rawQuery(
+        'SELECT COUNT(*) FROM ${SqlHelper.tableDatabase} WHERE sent = 1');
+    return Sqflite.firstIntValue(list);
+  }
+
   Future<List<Data>> orderBy(field, {order = 'ASC'}) async {
     var dbClient = await db;
 
     var list = await dbClient.rawQuery(
         'SELECT * FROM ${SqlHelper.tableDatabase} ORDER BY $field $order');
+
+    return list.map<Data>((json) => Data.fromJson(json)).toList();
+  }
+
+  Future<List<Data>> findToSend() async {
+    final dbClient = await db;
+
+    final list = await dbClient
+        .rawQuery('select * from ${SqlHelper.tableDatabase} where sent = 0');
 
     return list.map<Data>((json) => Data.fromJson(json)).toList();
   }

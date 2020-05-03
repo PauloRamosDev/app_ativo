@@ -8,6 +8,7 @@ class Data {
   String fieldSix;
   String fieldSeven;
   String fieldEigth;
+  int sent;
 
   Data({
     this.id,
@@ -19,6 +20,7 @@ class Data {
     this.fieldSix,
     this.fieldSeven,
     this.fieldEigth,
+    this.sent,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Data {
     fieldSix = json['fieldSix'];
     fieldSeven = json['fieldSeven'];
     fieldEigth = json['fieldEigth'];
+    sent = json['sent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +47,7 @@ class Data {
       'fieldSix': fieldSix,
       'fieldSeven': fieldSeven,
       'fieldEigth': fieldEigth,
+      'sent': sent,
     };
   }
 }

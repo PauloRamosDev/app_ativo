@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:appativo/api/api.dart';
+import 'package:appativo/api/send_api.dart';
 import 'package:appativo/details_page.dart';
 import 'package:appativo/home/widget_order_list.dart';
 import 'package:appativo/models/model_data.dart';
@@ -30,7 +31,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var provider = Provider.of<ProviderDatabase>(context);
     return Scaffold(
-//      drawer: Drawer(),
+      drawer: Drawer(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              DrawerHeader(
+                padding: EdgeInsets.all(0),
+                child: UserAccountsDrawerHeader(
+                  accountName: Text('App Ativo'),
+                  accountEmail: Text('Melville'),
+                ),
+              ),
+              ListTile(
+                title: Text('Status'),
+                onTap: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => SendToApi())),
+              )
+            ],
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: Text('Lista de ativos'),
         actions: <Widget>[
@@ -172,23 +192,20 @@ void apiTeste() async {
   var index = 0;
 
   for (var data in datas) {
+    var foto = await File(data.fieldSeven).exists();
 
+    if (foto) {
+      var response = await Api().uploadFile(data.fieldSeven);
 
-     var foto = await File(data.fieldSeven).exists();
+      data.fieldSeven = response.data;
 
-     if(foto){
-       var response = await Api().uploadFile(data.fieldSeven);
-
-       data.fieldSeven = response.data;
-
-       print(response.data);
-     }
-
+      print(response.data);
+    }
 
     var result = await Api().insertAtivo(data.toJson());
 
-    index ++;
+    index++;
     print(index);
-    print(result.statusMessage);
+    print(result);
   }
 }

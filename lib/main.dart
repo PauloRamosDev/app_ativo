@@ -1,3 +1,4 @@
+import 'package:appativo/api/bloc_api.dart';
 import 'package:appativo/home/home_page.dart';
 import 'package:appativo/provider/provider_database.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +16,17 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+            create: (context) => BlocApi(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => ProviderDatabase(),
         )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ativo Fixo',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-          accentColor: Colors.green
-        ),
+        theme:
+            ThemeData(primarySwatch: Colors.green, accentColor: Colors.green),
         home: HomePage(),
       ),
     );

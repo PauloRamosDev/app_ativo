@@ -6,7 +6,7 @@ class Api {
 
   static BaseOptions options = new BaseOptions(
     baseUrl: url,
-    connectTimeout: 10000,
+    connectTimeout: 15000,
   );
 
   Dio _dio = Dio(options);
@@ -33,11 +33,9 @@ class Api {
     return response;
   }
 
+   Future<int> insertAtivo(ativo) async {
+    var response = await _dio.post('/insertativo', data: ativo);
 
-  insertAtivo(ativo)async{
-
-    var response = await _dio.post('/insertativo',data: ativo);
-
-    return response;
+    return response.statusCode;
   }
 }

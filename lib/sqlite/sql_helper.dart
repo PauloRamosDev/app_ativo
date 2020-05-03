@@ -42,7 +42,8 @@ class SqlHelper {
         'fieldFive TEXT,'
         'fieldSix TEXT,'
         'fieldSeven TEXT,'
-        'fieldEigth TEXT'
+        'fieldEigth TEXT,'
+        'sent INTEGER'
         ')');
 
     await db.execute('CREATE TABLE $tableHeaders('
@@ -54,7 +55,8 @@ class SqlHelper {
         'fieldFive TEXT,'
         'fieldSix TEXT,'
         'fieldSeven TEXT,'
-        'fieldEigth TEXT'
+        'fieldEigth TEXT,'
+        'sent INTEGER'
         ')');
   }
 

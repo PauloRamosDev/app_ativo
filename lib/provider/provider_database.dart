@@ -114,6 +114,7 @@ class ProviderDatabase with ChangeNotifier {
           fieldSix: registro[5] != null ? registro[5].toString() : '',
           fieldSeven: registro[6] != null ? registro[6].toString() : '',
           fieldEigth: registro[7] != null ? registro[7].toString() : 'NÃO',
+          sent: 0
         );
 
         i == 0 ? await dao.insertHeader(data.toJson()) : await dao.insert(data);

@@ -94,7 +94,8 @@ class BlocEdit {
           fieldFour: modelo,
           fieldFive: medidas,
           fieldSeven: numeroFoto ?? 'INACESSÍVEL',
-          fieldEigth: verificado);
+          fieldEigth: verificado,
+          sent: 0);
 
       return await provider.insert(registro);
     }
