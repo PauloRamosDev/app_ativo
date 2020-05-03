@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:appativo/api/api.dart';
 import 'package:appativo/details_page.dart';
 import 'package:appativo/home/widget_order_list.dart';
 import 'package:appativo/models/model_data.dart';
@@ -18,9 +21,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    //apiTeste();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ProviderDatabase>(context);
-
     return Scaffold(
 //      drawer: Drawer(),
       appBar: AppBar(
@@ -56,8 +64,11 @@ class _HomePageState extends State<HomePage> {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => EditPage(data: result)));
               }),
-          OrderList(provider?.cabecalho?.toJson(),
-              context,init: provider.filter,)
+          OrderList(
+            provider?.cabecalho?.toJson(),
+            context,
+            init: provider.filter,
+          )
         ],
       ),
       body: _bodyConsumer(),
@@ -152,5 +163,32 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ));
+  }
+}
+
+void apiTeste() async {
+  var datas = await DatabaseDAO().findAll();
+
+  var index = 0;
+
+  for (var data in datas) {
+
+
+     var foto = await File(data.fieldSeven).exists();
+
+     if(foto){
+       var response = await Api().uploadFile(data.fieldSeven);
+
+       data.fieldSeven = response.data;
+
+       print(response.data);
+     }
+
+
+    var result = await Api().insertAtivo(data.toJson());
+
+    index ++;
+    print(index);
+    print(result.statusMessage);
   }
 }

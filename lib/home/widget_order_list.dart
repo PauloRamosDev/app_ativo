@@ -10,6 +10,8 @@ class OrderList extends StatefulWidget {
   final init;
 
   OrderList(this.filters, this.context, {this.init}) {
+
+    print(init);
     if (filters != null) {
       filters.remove('id');
 
@@ -25,30 +27,44 @@ class OrderList extends StatefulWidget {
 class _OrderListState extends State<OrderList> {
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      tooltip: 'Ordenar',
-      initialValue: widget.init,
-      icon: Icon(Icons.filter_list),
-      itemBuilder: (context) {
-        return List.generate(
-            widget.filters.length,
-            (index) => PopupMenuItem(
-                value: index == 0 ? 'id' : widget.keys[index].toString(),
-                child: Text(widget.values[index].toString())));
-      },
-      onSelected: (value) {
-        var provider = Provider.of<ProviderDatabase>(context, listen: false);
+    return SafeArea(
+      child: PopupMenuButton(
+        tooltip: 'Ordenar',
+//        initialValue: widget.init,
+        icon: Icon(Icons.filter_list),
+        itemBuilder: (context) {
+//        return widget.values
+//            .map((value) => PopupMenuItem(
+//                  child: Text(value.toString()),
+//                  value: value.toString(),
+//                ))
+//            .toList();
 
-        if (provider.filter == value) {
-          provider.filterASC = !provider.filterASC;
+          return List.generate(
+              widget.filters.length,
+              (index) => PopupMenuItem(
+                    value: widget.keys[index].toString(),
+                    child: Text(widget.values[index].toString()),
+                    textStyle: TextStyle(
+                        color: widget.keys[index].toString() == widget.init
+                            ? Colors.green
+                            : Colors.black),
+                  ));
+        },
+        onSelected: (value) {
+          var provider = Provider.of<ProviderDatabase>(context, listen: false);
 
-          provider.orderByList(value, provider.filterASC);
-        } else {
-          provider.filterASC = true;
-          provider.orderByList(value, provider.filterASC);
-          provider.filter = value;
-        }
-      },
+          if (provider.filter == value) {
+            provider.filterASC = !provider.filterASC;
+
+            provider.orderByList(value, provider.filterASC);
+          } else {
+            provider.filterASC = true;
+            provider.orderByList(value, provider.filterASC);
+            provider.filter = value;
+          }
+        },
+      ),
     );
   }
 }

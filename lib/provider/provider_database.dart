@@ -82,6 +82,9 @@ class ProviderDatabase with ChangeNotifier {
   }
 
   orderByList(field, orderBY) async {
+
+    if(field == 'fieldOne') field = 'id';
+
     var order = await dao.orderBy(field, order: orderBY ? 'ASC' : 'DESC');
     if (order != null && order.length > 0) {
       database = order;
